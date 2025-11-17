@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "hubspot-remote": {
+      "url": "C:/Users/Manhar/Desktop/remote-mcp-server/server/index.js",
+      "headers": {
+        "Authorization": "Bearer pat-na1-43b0ac76-bb60-4053-9369-17f3517f87b7"
+      }
+    }
+  }
+}

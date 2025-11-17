@@ -1,4 +1,4 @@
-import { runTool } from "../server/tools.js";
+import { runTool } from "./tools.js";
 
 // ----- HTTP Handler (POST /mcp) -----
 export async function handleMcpHttp(req, res) {
