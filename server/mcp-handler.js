@@ -1,10 +1,10 @@
+// mcp-handler.js
 import { runTool } from "./tools.js";
 
-// ----- HTTP Handler (POST /mcp) -----
 export function handleMcpHttp(req, res) {
   const { id, method, params } = req.body;
 
-  // 1) Return list of tools
+  // 1) LIST TOOLS (CRITICAL)
   if (method === "tools/list") {
     return res.json({
       id,
@@ -12,43 +12,43 @@ export function handleMcpHttp(req, res) {
         tools: [
           {
             name: "getContacts",
-            description: "Fetch contacts from HubSpot",
+            description: "Fetch contacts from HubSpot CRM",
             inputSchema: {
               type: "object",
               properties: {},
-            },
+              required: []
+            }
           }
         ]
       }
     });
   }
 
-  // 2) Execute tools
-  if (method === "tools.call") {
+  // 2) CALL TOOL
+  if (method === "tools/call") {
     const { name, arguments: args } = params;
 
     runTool(name, args)
-      .then(result => {
+      .then((result) => {
         res.json({ id, result });
       })
-      .catch(err => {
-        res.json({ id, error: { message: err.message } });
+      .catch((err) => {
+        res.json({
+          id,
+          error: {
+            message: err.message,
+          },
+        });
       });
 
     return;
   }
 
-  // Handle unknown methods
-  res.json({ id, error: { message: "Unknown method " + method } });
-}
-
-
-// ----- SSE Handler (GET /mcp) -----
-export function handleMcpSse(req, res) {
-  // Cursor expects SSE channel to be open
-  res.setHeader("Content-Type", "text/event-stream");
-  res.setHeader("Cache-Control", "no-cache");
-  res.setHeader("Connection", "keep-alive");
-
-  res.write(": ok\n\n");
+  // 3) UNKNOWN METHOD
+  res.json({
+    id,
+    error: {
+      message: `Unknown method: ${method}`,
+    },
+  });
 }
