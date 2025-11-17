@@ -13,22 +13,16 @@ export function handleMcpHttp(req, res) {
           {
             name: "getContacts",
             description: "Fetch contacts from HubSpot CRM",
-            inputSchema: {
-              type: "object",
-              properties: {}
-            },
+            inputSchema: { type: "object", properties: {} },
             outputSchema: {
               type: "object",
               properties: {
-                contacts: {
-                  type: "array",
-                  items: { type: "object" }
-                }
-              }
-            }
-          }
-        ]
-      }
+                contacts: { type: "array", items: { type: "object" } },
+              },
+            },
+          },
+        ],
+      },
     });
   }
 
@@ -41,14 +35,14 @@ export function handleMcpHttp(req, res) {
         res.json({
           jsonrpc: "2.0",
           id,
-          result: data
+          result: data,
         });
       })
       .catch((err) => {
         res.json({
           jsonrpc: "2.0",
           id,
-          error: { message: err.message }
+          error: { message: err.message },
         });
       });
 
@@ -59,6 +53,6 @@ export function handleMcpHttp(req, res) {
   return res.json({
     jsonrpc: "2.0",
     id,
-    error: { message: `Unsupported method: ${method}` }
+    error: { message: `Unsupported method: ${method}` },
   });
 }
