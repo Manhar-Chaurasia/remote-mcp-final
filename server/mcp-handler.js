@@ -1,12 +1,12 @@
-// mcp-handler.js
 import { runTool } from "./tools.js";
 
 export function handleMcpHttp(req, res) {
   const { id, method, params } = req.body;
 
-  // === 1) LIST TOOLS (MCP COMPLIANT) ===
+  // Return the list of tools
   if (method === "tools/list") {
     return res.json({
+      jsonrpc: "2.0",
       id,
       result: {
         tools: [
@@ -15,8 +15,7 @@ export function handleMcpHttp(req, res) {
             description: "Fetch contacts from HubSpot CRM",
             inputSchema: {
               type: "object",
-              properties: {},
-              required: []
+              properties: {}
             },
             outputSchema: {
               type: "object",
@@ -33,34 +32,33 @@ export function handleMcpHttp(req, res) {
     });
   }
 
-  // === 2) CALL TOOL ===
+  // Execute a tool
   if (method === "tools/call") {
     const { name, arguments: args } = params;
 
     runTool(name, args)
-      .then((result) => {
+      .then((data) => {
         res.json({
+          jsonrpc: "2.0",
           id,
-          result
+          result: data
         });
       })
       .catch((err) => {
         res.json({
+          jsonrpc: "2.0",
           id,
-          error: {
-            message: err.message
-          }
+          error: { message: err.message }
         });
       });
 
     return;
   }
 
-  // === 3) UNKNOWN METHOD ===
-  res.json({
+  // Unknown method
+  return res.json({
+    jsonrpc: "2.0",
     id,
-    error: {
-      message: `Unknown method: ${method}`
-    }
+    error: { message: `Unsupported method: ${method}` }
   });
 }
