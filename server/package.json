@@ -1,0 +1,13 @@
+{
+  "name": "hubspot-remote-mcp",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@hubspot/api-client": "^13.2.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}
