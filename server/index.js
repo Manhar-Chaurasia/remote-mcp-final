@@ -1,13 +1,12 @@
 import express from "express";
 import cors from "cors";
-import { handleMcpHttp, handleMcpSse } from "./mcp-handler.js";
+import { handleMcpHttp } from "./mcp-handler.js";
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
 // SSE endpoint for streaming responses (Cursor expects this)
-app.get("/mcp", handleMcpSse);
 
 // HTTP POST for normal MCP tool requests
 app.post("/mcp", handleMcpHttp);
