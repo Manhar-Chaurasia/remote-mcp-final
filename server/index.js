@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { handleMcpHttp, handleMcpSse } from ".mcp-handler.js";
+import { handleMcpHttp, handleMcpSse } from "./mcp-handler.js";
 
 const app = express();
 app.use(express.json());
