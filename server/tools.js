@@ -1,4 +1,4 @@
-import { hubspotClient } from ".hubspot.js";
+import { hubspotClient } from "./hubspot.js";
 
 export async function runTool(name, args) {
   switch (name) {
