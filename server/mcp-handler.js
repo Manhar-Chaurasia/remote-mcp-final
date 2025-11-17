@@ -4,7 +4,7 @@ import { runTool } from "./tools.js";
 export function handleMcpHttp(req, res) {
   const { id, method, params } = req.body;
 
-  // 1) LIST TOOLS (CRITICAL)
+  // === 1) LIST TOOLS (MCP COMPLIANT) ===
   if (method === "tools/list") {
     return res.json({
       id,
@@ -17,6 +17,15 @@ export function handleMcpHttp(req, res) {
               type: "object",
               properties: {},
               required: []
+            },
+            outputSchema: {
+              type: "object",
+              properties: {
+                contacts: {
+                  type: "array",
+                  items: { type: "object" }
+                }
+              }
             }
           }
         ]
@@ -24,31 +33,34 @@ export function handleMcpHttp(req, res) {
     });
   }
 
-  // 2) CALL TOOL
+  // === 2) CALL TOOL ===
   if (method === "tools/call") {
     const { name, arguments: args } = params;
 
     runTool(name, args)
       .then((result) => {
-        res.json({ id, result });
+        res.json({
+          id,
+          result
+        });
       })
       .catch((err) => {
         res.json({
           id,
           error: {
-            message: err.message,
-          },
+            message: err.message
+          }
         });
       });
 
     return;
   }
 
-  // 3) UNKNOWN METHOD
+  // === 3) UNKNOWN METHOD ===
   res.json({
     id,
     error: {
-      message: `Unknown method: ${method}`,
-    },
+      message: `Unknown method: ${method}`
+    }
   });
 }
